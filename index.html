@@ -4,14 +4,17 @@
 </head>
 <body>
 
-	<svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+	<svg id="svg" height = '0' width = '0'>xmlns="http://www.w3.org/2000/svg"></svg>
 
 	<script>
+	document.body.style.margin = 0;
+	document.getElementById('svg').style.height = document.body.clientHeight;
+	document.getElementById('svg').style.width = document.body.clientWidth;
 	function Circle(cx, cy, html_id)
 	{
 		var html_id = html_id;
 		this.info = { cx: cx,  cy: cy };
-		
+
 		//private function that generates a random number
 		var randomNumberBetween = function(min, max){
 			return Math.random()*(max-min) + min;
@@ -24,11 +27,11 @@
 				y: randomNumberBetween(-3,3)
 			}
 
-			//create a circle 
-			var circle = makeSVG('circle', 
+			//create a circle
+			var circle = makeSVG('circle',
 				{ 	cx: this.info.cx,
 				  	cy: this.info.cy,
-				  	r:  10,
+				  	r:  50,
 				  	id: html_id,
 				  	style: "fill: black"
 				});
@@ -40,11 +43,11 @@
 			var el = document.getElementById(html_id);
 
 			//see if the circle is going outside the browser. if it is, reverse the velocity
-			if( this.info.cx > document.body.clientWidth || this.info.cx < 0)
+			if( this.info.cx > document.body.clientWidth - el.getAttribute('r')|| this.info.cx < el.getAttribute('r'))
 			{
 				this.info.velocity.x = this.info.velocity.x * -1;
 			}
-			if( this.info.cy > document.body.clientHeight || this.info.cy < 0)
+			if( this.info.cy > document.body.clientHeight - el.getAttribute('r') || this.info.cy< el.getAttribute('r'))
 			{
 				this.info.velocity.y = this.info.velocity.y * -1;
 			}
@@ -76,6 +79,8 @@
 
 		//a loop that updates the circle's position on the screen
 		this.loop = function(){
+		document.getElementById('svg').style.height = document.body.clientHeight;
+		document.getElementById('svg').style.width = document.body.clientWidth;
 			for(circle in circles)
 			{
 				circles[circle].update(1);
@@ -93,12 +98,12 @@
 	}
 
 	var playground = new PlayGround();
-	setInterval(playground.loop, 15);
+	setInterval(playground.loop, 1);
 
 	document.onclick = function(e) {
 		playground.createNewCircle(e.x,e.y);
 	}
-	
+
 	</script>
 
 </body>
