@@ -69,6 +69,13 @@
 			}
 		}
 
+		//FOR COLLISION REMOVE
+
+		// this.remove = function(i){
+		// 	var divvie = document.getElementById('svg')
+		// 	divvie.removeChild(divvie.children[i]);
+		// }
+
 		//creates the SVG element and returns it
 		var makeSVG = function(tag, attrs) {
 	        var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -88,13 +95,51 @@
 		var counter = 0;  //counts the number of circles created
 		var circles = [ ]; //array that will hold all the circles created in the app
 		this.circles = circles;
+
+		//collision remove
+
+		// function removeAtandComb(arr, idx){
+		// 	if(idx == arr.length - 1){
+		// 		arr.pop();
+		// 		return;
+		// 	}
+		// 	for(var i = idx; i<arr.length-1; i++){
+		// 		var temp2 = arr[i];
+		// 		arr[i] = arr[i+1];
+		// 		arr[i+1] = temp2;
+		// 	}
+		// 	arr.pop();
+		// }
+		// function collisionCheck(this_circle, idx){
+		// 	for(var z = 0; z<circles.length; z++){
+		// 		if(z == idx){
+		// 			continue;
+		// 		}
+		// 		var critical_distance = this_circle.info.r + circles[z].info.r;
+		// 		if(Math.abs(this_circle.info.cx - circles[z].info.cx) <= critical_distance && Math.abs(this_circle.info.cy - circles[z].info.cy) <= critical_distance){
+		// 			console.log(idx);
+		// 			console.log(z);
+		//
+		// 			circles[idx].remove(idx);
+		// 			removeAtandComb(circles, idx);
+		// 			if(z>idx){
+		// 				z-=1;
+		// 			}
+		// 			circles[z].remove(z);
+		// 			removeAtandComb(circles, z);
+		// 		}
+		// 	}
+		// }
+
 		function collisionCheck(this_circle, idx){
 			for(var z = 0; z<circles.length; z++){
 				if(z == idx){
 					continue;
 				}
-				if(Math.abs(this_circle.info.cx - circles[z].info.cx) <= 10 && Math.abs(this_circle.info.cy - circles[z].info.cy) <= 10){
-					console.log("COLLISION");
+				var critical_distance = this_circle.info.r + circles[z].info.r;
+				if(Math.abs(this_circle.info.cx - circles[z].info.cx) <= critical_distance && Math.abs(this_circle.info.cy - circles[z].info.cy) <= critical_distance){
+					//combineChild
+
 				}
 			}
 		}
