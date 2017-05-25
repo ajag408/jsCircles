@@ -80,6 +80,7 @@
 	    }
 
 	    this.initialize();
+			// console.log(document.getElementById('svg').children);
 	}
 
 	function PlayGround()
@@ -87,16 +88,28 @@
 		var counter = 0;  //counts the number of circles created
 		var circles = [ ]; //array that will hold all the circles created in the app
 		this.circles = circles;
-
+		function collisionCheck(this_circle, idx){
+			for(var z = 0; z<circles.length; z++){
+				if(z == idx){
+					continue;
+				}
+				if(Math.abs(this_circle.info.cx - circles[z].info.cx) <= 10 && Math.abs(this_circle.info.cy - circles[z].info.cy) <= 10){
+					console.log("COLLISION");
+				}
+			}
+		}
 		//a loop that updates the circle's position on the screen
 		this.loop = function(){
 			document.getElementById('svg').style.height = document.body.clientHeight;
 			document.getElementById('svg').style.width = document.body.clientWidth;
-			for(circle in circles)
+			for(var i = 0; i<circles.length; i++)
 			{
-				circles[circle].update(1);
+				circles[i].update(1);
+				collisionCheck(circles[i], i);
 			}
 		}
+
+
 
 		this.enlarge = function(timepress){
 			circles[circles.length-1].enlarge(timepress);
