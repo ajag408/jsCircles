@@ -64,17 +64,31 @@
 			} else {
 				factor = t/250 + 1;
 				var el = document.getElementById(html_id);
+				el.style.transition = 'r 0.7s';
 				this.info.r = this.info.r * factor;
 				el.setAttribute('r', this.info.r);
 			}
 		}
 
-		//FOR COLLISION REMOVE
 
-		// this.remove = function(i){
-		// 	var divvie = document.getElementById('svg')
-		// 	divvie.removeChild(divvie.children[i]);
-		// }
+		this.remove = function(i){
+			var divvie = document.getElementById('svg')
+			divvie.removeChild(divvie.children[i]);
+		}
+
+		this.changeDirection = function(){
+			this.info.velocity.x = this.info.velocity.x * -1;
+			this.info.velocity.y = this.info.velocity.y * -1;
+		}
+
+		this.changeColor = function(){
+			var el = document.getElementById(html_id);
+			if(el.style.fill == 'black'){
+				el.style.fill = 'blue';
+			}else{
+				el.style.fill = 'black';
+			}
+		}
 
 		//creates the SVG element and returns it
 		var makeSVG = function(tag, attrs) {
@@ -96,28 +110,27 @@
 		var circles = [ ]; //array that will hold all the circles created in the app
 		this.circles = circles;
 
-		//collision remove
+		function removeAtandComb(arr, idx){
+			if(idx == arr.length - 1){
+				arr.pop();
+				return;
+			}
+			for(var i = idx; i<arr.length-1; i++){
+				var temp2 = arr[i];
+				arr[i] = arr[i+1];
+				arr[i+1] = temp2;
+			}
+			arr.pop();
+		}
+		function collisionCheck(this_circle, idx){
+			for(var z = 0; z<circles.length; z++){
+				if(z == idx){
+					continue;
+				}
+				var critical_distance = this_circle.info.r + circles[z].info.r;
+				if(Math.abs(this_circle.info.cx - circles[z].info.cx) < critical_distance && Math.abs(this_circle.info.cy - circles[z].info.cy) < critical_distance){
 
-		// function removeAtandComb(arr, idx){
-		// 	if(idx == arr.length - 1){
-		// 		arr.pop();
-		// 		return;
-		// 	}
-		// 	for(var i = idx; i<arr.length-1; i++){
-		// 		var temp2 = arr[i];
-		// 		arr[i] = arr[i+1];
-		// 		arr[i+1] = temp2;
-		// 	}
-		// 	arr.pop();
-		// }
-		// function collisionCheck(this_circle, idx){
-		// 	for(var z = 0; z<circles.length; z++){
-		// 		if(z == idx){
-		// 			continue;
-		// 		}
-		// 		var critical_distance = this_circle.info.r + circles[z].info.r;
-		// 		if(Math.abs(this_circle.info.cx - circles[z].info.cx) <= critical_distance && Math.abs(this_circle.info.cy - circles[z].info.cy) <= critical_distance){
-		// 			console.log(idx);
+		// //collsion remove
 		// 			console.log(z);
 		//
 		// 			circles[idx].remove(idx);
@@ -127,22 +140,28 @@
 		// 			}
 		// 			circles[z].remove(z);
 		// 			removeAtandComb(circles, z);
-		// 		}
-		// 	}
-		// }
 
-		function collisionCheck(this_circle, idx){
-			for(var z = 0; z<circles.length; z++){
-				if(z == idx){
-					continue;
-				}
-				var critical_distance = this_circle.info.r + circles[z].info.r;
-				if(Math.abs(this_circle.info.cx - circles[z].info.cx) <= critical_distance && Math.abs(this_circle.info.cy - circles[z].info.cy) <= critical_distance){
-					//combineChild
+		//collsion merge 1 and 2
+
+						circles[idx].enlarge(500);
+						circles[z].remove(z);
+						removeAtandComb(circles, z);
+
+
+				// //ball rebound
+				// 		circles[idx].changeDirection();
+				// 		circles[z].changeDirection();
+
+		//	//change color
+				// circles[idx].changeColor();
+				// circles[z].changeColor();
+
 
 				}
 			}
 		}
+
+
 		//a loop that updates the circle's position on the screen
 		this.loop = function(){
 			document.getElementById('svg').style.height = document.body.clientHeight;
